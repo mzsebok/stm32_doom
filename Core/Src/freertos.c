@@ -156,7 +156,7 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* definition and creation of DoomTask */
-  osThreadDef(DoomTask, DoomMain, osPriorityRealtime, 0, 4096);
+  osThreadDef(DoomTask, DoomMain, osPriorityRealtime, 0, 128);
   DoomTaskHandle = osThreadCreate(osThread(DoomTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */

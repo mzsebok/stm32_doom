@@ -109,9 +109,6 @@ uint8_t DoomLcd_Init(void)
     hLtdcHandler.Init.TotalHeigh = (RK043FN48H_HEIGHT + RK043FN48H_VSYNC + RK043FN48H_VBP + RK043FN48H_VFP - 1);
     hLtdcHandler.Init.TotalWidth = (RK043FN48H_WIDTH + RK043FN48H_HSYNC + RK043FN48H_HBP + RK043FN48H_HFP - 1);
 
-    /* LCD clock configuration */
-    DoomLcd_ClockConfig(&hLtdcHandler, NULL);
-
     /* Initialize the LCD pixel width and pixel height */
     hLtdcHandler.LayerCfg->ImageWidth  = RK043FN48H_WIDTH;
     hLtdcHandler.LayerCfg->ImageHeight = RK043FN48H_HEIGHT;
