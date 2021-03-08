@@ -21,9 +21,13 @@
 //
 //-----------------------------------------------------------------------------
 
+static const char
+rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
+
 #include <stdlib.h>
 
 #include "DoomLcd.h"
+#include "DoomKey.h"
 
 #include "doomstat.h"
 #include "i_system.h"
@@ -31,6 +35,8 @@
 #include "m_argv.h"
 #include "d_main.h"
 #include "doomdef.h"
+
+#include "DoomKey.h"
 
 void I_ShutdownGraphics(void)
 {
@@ -48,7 +54,25 @@ void I_StartFrame (void)
 
 void I_GetEvent(void)
 {
-    // mouse/key events
+    event_t event;
+    doomKeyEvent_t keyEvent;
+
+    if (get_doomKeyEvent(&keyEvent))
+    {
+        switch (keyEvent.type)
+        {
+        case doomKey_Down:
+            event.type = ev_keydown;
+            event.data1 = keyEvent.code;
+            D_PostEvent(&event);
+            break;
+          case doomKey_Up:
+            event.type = ev_keyup;
+            event.data1 = keyEvent.code;
+            D_PostEvent(&event);
+            break;
+        }
+    }
 }
 
 

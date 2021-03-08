@@ -1,8 +1,5 @@
 /*
  * palette256.h
- *
- *  Created on: 2021. febr. 17.
- *      Author: Marci
  */
 
 #ifndef INCLUDE_PALETTE256_H_

@@ -1,8 +1,5 @@
 /*
  * DoomLcd.h
- *
- *  Created on: 2021. febr. 17.
- *      Author: Marci
  */
 
 #ifndef INCLUDE_DOOMLCD_H_

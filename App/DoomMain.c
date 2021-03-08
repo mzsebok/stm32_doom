@@ -1,26 +1,16 @@
-#include "FreeRTOS.h"
-#include "task.h"
+#include <string.h>
 #include "cmsis_os.h"
 #include "stm32746g_discovery.h"
 #include "stm32746g_discovery_lcd.h"
-#include "stm32746g_discovery_qspi.h"
-#include "stm32746g_discovery_sdram.h"
-#include "usart.h"
 #include "systime.h"
-#include <string.h>
-#include "DoomMain.h"
-#include "DoomLcd.h"
-#include "palette256.h"
 #include "fatfs.h"
-#include "ff.h"
-#include "usbh_hid.h"
-
-#include "doomdef.h"
+#include "DoomLcd.h"
+#include "DoomKey.h"
+#include "palette256.h"
 #include "d_main.h"
+#include "DoomMain.h"
 
-LTDC_HandleTypeDef hltdc;
-DMA2D_HandleTypeDef hdma2d;
-osThreadId DoomMainHandle;
+osThreadId          DoomMainHandle;     // Thread for doom application
 
 /**
   * @brief  LCD configuration
@@ -45,51 +35,6 @@ static void LCD_Config(void)
     DoomLcd_Clear(0);
 }
 
-void USBH_HID_EventCallback(USBH_HandleTypeDef *phost)
-{
-    if (USBH_HID_GetDeviceType(phost) == HID_MOUSE)
-    {
-        HID_MOUSE_Info_TypeDef *mouseInfo;
-        mouseInfo = USBH_HID_GetMouseInfo(phost);
-    }
-
-    if (USBH_HID_GetDeviceType(phost) == HID_KEYBOARD)
-    {
-        HID_KEYBD_Info_TypeDef *keyboardInfo;
-        keyboardInfo = USBH_HID_GetKeybdInfo(phost);
-        char key = USBH_HID_GetASCIICode(keyboardInfo);
-        if (key == 'w')
-            DoomLcd_PutPixel(20, 20, 252);
-        if (key == 'a')
-                    DoomLcd_PutPixel(20, 40, 252);
-        if (key == 's')
-                    DoomLcd_PutPixel(20, 60, 252);
-        if (key == 'd')
-                    DoomLcd_PutPixel(20, 80, 252);
-    }
-}
-
-#if defined(__GNUC__)
-int _write(int fd, char * ptr, int len)
-{
-  HAL_UART_Transmit(&huart1, (uint8_t *) ptr, len, HAL_MAX_DELAY);
-  return len;
-}
-#elif defined (__ICCARM__)
-#include "LowLevelIOInterface.h"
-size_t __write(int handle, const unsigned char * buffer, size_t size)
-{
-  HAL_UART_Transmit(&huart1, (uint8_t *) buffer, size, HAL_MAX_DELAY);
-  return size;
-}
-#elif defined (__CC_ARM)
-int fputc(int ch, FILE *f)
-{
-    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
-    return ch;
-}
-#endif
-
 void DoomMain(void const * argument)
 {
     systime_init();
@@ -100,6 +45,8 @@ void DoomMain(void const * argument)
     MX_FATFS_Mount();
 
     LCD_Config();
+
+    init_doomKey();
 
     uint32_t now = systime_get();
 

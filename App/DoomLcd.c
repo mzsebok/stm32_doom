@@ -1,13 +1,13 @@
 /*
  * DoomLcd.c
- *
- *  Created on: 2021. febr. 17.
- *      Author: Marci
  */
 
 #include "../Components/rk043fn48h/rk043fn48h.h"
 #include "stm32746g_discovery.h"
 #include "DoomLcd.h"
+
+LTDC_HandleTypeDef  hltdc;
+DMA2D_HandleTypeDef hdma2d;
 
 LTDC_HandleTypeDef  hLtdcHandler;
 static uint32_t ActiveLayer = 0;

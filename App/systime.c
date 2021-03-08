@@ -1,8 +1,5 @@
 /*
  * systime.c
- *
- *  Created on: 2021. febr. 15.
- *      Author: Marci
  */
 
 #include "systime.h"

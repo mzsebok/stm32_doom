@@ -1,8 +1,5 @@
 /*
  * systime.h
- *
- *  Created on: 2021. febr. 15.
- *      Author: Marci
  */
 
 #ifndef INCLUDE_SYSTIME_H_
