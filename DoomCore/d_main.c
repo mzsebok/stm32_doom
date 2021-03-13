@@ -552,7 +552,7 @@ void IdentifyVersion (void)
     gamemode = retail;
     D_AddFile ("doomu.wad");
 #elif 1
-    gamemode = retail;
+    gamemode = commercial;
     D_AddFile ("doom.wad");
 #elif 0
     gamemode = shareware;

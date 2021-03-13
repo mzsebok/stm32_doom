@@ -50,7 +50,7 @@ void DoomMain(void const * argument)
 
     uint32_t now = systime_get();
 
-    osThreadDef(D_DoomMain, D_DoomMain, osPriorityNormal, 0, 512);
+    osThreadDef(D_DoomMain, D_DoomMain, osPriorityNormal, 0, 4096);
     DoomMainHandle = osThreadCreate(osThread(D_DoomMain), NULL);
 
     while(1)
