@@ -34,13 +34,13 @@ _Min_Stack_Size = 0xC00 ;	/* required amount of stack */
 
 /* Use whole external SDRAM for heap */
 __heap_start = 0xC0640000;
-__heap_limit = 0xC07C0000;
+__heap_limit = 0xC07B0000;
 
 /* Memories definition */
 MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 320K
-  SRAM    (rw)     : ORIGIN = 0xC07C0000,   LENGTH = 256K
+  SRAM    (rw)     : ORIGIN = 0xC07B0000,   LENGTH = 320K
 /*  HSRAM    (rw)    : ORIGIN = 0xC0640000,   LENGTH = 1024K*/
   FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 1024K
 }
