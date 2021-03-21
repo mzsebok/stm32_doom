@@ -64,11 +64,15 @@ void I_GetEvent(void)
         case doomKey_Down:
             event.type = ev_keydown;
             event.data1 = keyEvent.code;
+            event.data2 = 0;
+            event.data3 = 0;
             D_PostEvent(&event);
             break;
-          case doomKey_Up:
+        case doomKey_Up:
             event.type = ev_keyup;
             event.data1 = keyEvent.code;
+            event.data2 = 0;
+            event.data3 = 0;
             D_PostEvent(&event);
             break;
         }

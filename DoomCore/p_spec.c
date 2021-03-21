@@ -152,7 +152,7 @@ void P_InitPicAnims (void)
     
     //	Init animation
     lastanim = anims;
-    for (i=0 ; animdefs[i].istexture != (uint8_t)(-1) ; i++)
+    for (i=0 ; animdefs[i].istexture != (uint32_t)(-1) ; i++)
     {
 	if (animdefs[i].istexture)
 	{

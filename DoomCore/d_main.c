@@ -119,7 +119,7 @@ boolean		advancedemo;
 
 //char		wadfile[1024];		// primary wad file
 //char		mapdir[1024];           // directory of development maps
-char		basedefault[1024];      // default file
+char		basedefault[64];      // default file
 
 
 void D_CheckNetGame (void);
@@ -552,7 +552,7 @@ void IdentifyVersion (void)
     gamemode = retail;
     D_AddFile ("doomu.wad");
 #elif 1
-    gamemode = commercial;
+    gamemode = retail;
     D_AddFile ("doom.wad");
 #elif 0
     gamemode = shareware;

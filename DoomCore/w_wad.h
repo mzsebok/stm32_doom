@@ -23,6 +23,8 @@
 #ifndef __W_WAD__
 #define __W_WAD__
 
+#include "doomtype.h"
+
 
 #ifdef __GNUG__
 #pragma interface

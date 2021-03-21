@@ -14,7 +14,7 @@
 #define DKEY_LALT    DKEY_RALT
 
 osMailQId keyEventQID;   // Que for key events
-osMailQDef(DoomKeyQueue, 10, doomKeyEvent_t);
+osMailQDef(DoomKeyQueue, 128, doomKeyEvent_t);
 
 static bool isInitialized = false;
 static HID_KEYBD_Info_TypeDef prevKeyboardInfo;
@@ -68,19 +68,22 @@ static  const  uint8_t  HID_SCAN_Codes[] =
 
 static void sendScanCode(doomKeyEvent_t event)
 {
-    doomKeyEvent_t *data;
+    doomKeyEvent_t *data = NULL;
     data = (doomKeyEvent_t*) osMailAlloc(keyEventQID, osWaitForever);
 
-    data->type = event.type;
-    data->code = event.code;
+    if (data != NULL)
+    {
+        data->type = event.type;
+        data->code = event.code;
 
-    osMailPut(keyEventQID, data);
+        osMailPut(keyEventQID, data);
+    }
 }
 
 void USBH_HID_EventCallback(USBH_HandleTypeDef *phost)
 {
-    HID_KEYBD_Info_TypeDef *keyboardInfo;
-    HID_MOUSE_Info_TypeDef *mouseInfo;
+    HID_KEYBD_Info_TypeDef *keyboardInfo = NULL;
+    HID_MOUSE_Info_TypeDef *mouseInfo = NULL;
 
     if (USBH_HID_GetDeviceType(phost) == HID_MOUSE)
     {
@@ -124,51 +127,54 @@ void USBH_HID_EventCallback(USBH_HandleTypeDef *phost)
             sendScanCode(keyEvent);
         }
 
-        // search for key down events
-        for (uint8_t i = 0u; i < sizeof(keyboardInfo->keys); i++)
+        if (keyboardInfo->keys[0] != 0x01)  // detect overflow
         {
-            bool found = false;
-            for (uint8_t j = 0u; j < sizeof(prevKeyboardInfo.keys); j++)
+            // search for key down events
+            for (uint8_t i = 0u; i < sizeof(keyboardInfo->keys); i++)
             {
-                if (keyboardInfo->keys[i] != 0 && keyboardInfo->keys[i] == prevKeyboardInfo.keys[j])
+                bool found = false;
+                for (uint8_t j = 0u; j < sizeof(prevKeyboardInfo.keys); j++)
                 {
-                    // key found
-                    found = true;
-                    break;
+                    if (keyboardInfo->keys[i] != 0 && keyboardInfo->keys[i] == prevKeyboardInfo.keys[j])
+                    {
+                        // key found
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (keyboardInfo->keys[i] != 0 && !found)
+                {
+                    keyEvent.type = doomKey_Down;
+                    keyEvent.code = HID_SCAN_Codes[keyboardInfo->keys[i]];
+                    sendScanCode(keyEvent);
                 }
             }
 
-            if (keyboardInfo->keys[i] != 0 && !found)
+            // search for key up events
+            for (uint8_t i = 0u; i < sizeof(prevKeyboardInfo.keys); i++)
             {
-                keyEvent.type = doomKey_Down;
-                keyEvent.code = HID_SCAN_Codes[keyboardInfo->keys[i]];
-                sendScanCode(keyEvent);
-            }
-        }
-
-        // search for key up events
-        for (uint8_t i = 0u; i < sizeof(prevKeyboardInfo.keys); i++)
-        {
-            bool found = false;
-            for (uint8_t j = 0u; j < sizeof(keyboardInfo->keys); j++)
-            {
-                if (prevKeyboardInfo.keys[i] != 0 && prevKeyboardInfo.keys[i] == keyboardInfo->keys[j])
+                bool found = false;
+                for (uint8_t j = 0u; j < sizeof(keyboardInfo->keys); j++)
                 {
-                    // key found
-                    found = true;
-                    break;
+                    if (prevKeyboardInfo.keys[i] != 0 && prevKeyboardInfo.keys[i] == keyboardInfo->keys[j])
+                    {
+                        // key found
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (prevKeyboardInfo.keys[i] != 0 && !found)
+                {
+                    keyEvent.type = doomKey_Up;
+                    keyEvent.code = HID_SCAN_Codes[prevKeyboardInfo.keys[i]];
+                    sendScanCode(keyEvent);
                 }
             }
 
-            if (prevKeyboardInfo.keys[i] != 0 && !found)
-            {
-                keyEvent.type = doomKey_Up;
-                keyEvent.code = HID_SCAN_Codes[prevKeyboardInfo.keys[i]];
-                sendScanCode(keyEvent);
-            }
+            prevKeyboardInfo = *keyboardInfo;
         }
-
-        prevKeyboardInfo = *keyboardInfo;
     }
 }
 
@@ -188,6 +194,7 @@ uint8_t get_doomKeyEvent(doomKeyEvent_t *keyEvent)
     {
         memcpy(keyEvent, event.value.p, sizeof(doomKeyEvent_t));
         osMailFree(keyEventQID, event.value.p);
+
         return 1;
     }
     return 0;

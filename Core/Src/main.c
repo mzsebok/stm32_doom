@@ -28,7 +28,6 @@
 #include "usb_host.h"
 #include "gpio.h"
 #include "fmc.h"
-#include "stm32746g_discovery_sdram.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */

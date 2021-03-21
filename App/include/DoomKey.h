@@ -15,6 +15,7 @@ typedef struct {
     uint16_t code;             // key scan code
 } doomKeyEvent_t;
 
+void init_doomKey(void);
 uint8_t get_doomKeyEvent(doomKeyEvent_t *keyEvent);
 
 #endif /* INCLUDE_DOOMKEY_H_ */

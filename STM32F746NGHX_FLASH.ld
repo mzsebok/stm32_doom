@@ -53,10 +53,6 @@ SECTIONS
     {
         . = ALIGN(4);
         *(.sdram .sdram.*)
-        DoomCore/i_video.o(COMMON)
-        DoomCore/r_bsp.o(COMMON)
-        DoomCore/w_wad.o(COMMON)
-        DoomCore/r_main.o(COMMON)
         DoomCore/r_plane.o(COMMON)
     } > SRAM
 

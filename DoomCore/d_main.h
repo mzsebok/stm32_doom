@@ -33,7 +33,7 @@
 
 
 
-#define MAXWADFILES             20
+#define MAXWADFILES             1
 extern char*		wadfiles[MAXWADFILES];
 
 void D_AddFile (char *file);
