@@ -40,7 +40,7 @@ static void LCD_Config(void)
 
 void sram_init(void)
 {
-    uint32_t *p = 0xC07C0000;
+    uint32_t *p = 0xC07B0000;
     for (uint32_t i = 0u; i < 256*1024/4; i++)
     {
         *(p++) = 0u;
@@ -66,7 +66,6 @@ void DoomMain(void const * argument)
     uint32_t now = systime_get();
 
     BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE, 128, AUDIO_FREQUENCY_11K);
-//    BSP_AUDIO_OUT_Play((uint16_t*)&Sine550hz[0],sizeof(Sine550hz));
 
     printf("..............................\r\n");
     printf("Press ENTER to start the game!\r\n");

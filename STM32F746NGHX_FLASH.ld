@@ -40,7 +40,7 @@ __heap_limit = 0xC07B0000;
 MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 320K
-  SRAM    (rw)     : ORIGIN = 0xC07B0000,   LENGTH = 320K
+  SRAM    (rw)     : ORIGIN = 0xC07B0000,   LENGTH = 512K
 /*  HSRAM    (rw)    : ORIGIN = 0xC0640000,   LENGTH = 1024K*/
   FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 1024K
 }
@@ -54,6 +54,7 @@ SECTIONS
         . = ALIGN(4);
         *(.sdram .sdram.*)
         DoomCore/r_plane.o(COMMON)
+        DoomCore/i_sound.o(COMMON)
     } > SRAM
 
   /* The startup code into "FLASH" Rom type memory */

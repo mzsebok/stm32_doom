@@ -43,8 +43,8 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 // Needed for calling the actual sound output.
 #define SAMPLECOUNT         512
 #define NUM_CHANNELS        8
-// It is 2 for 16bit, and 2 for two channels.
-#define BUFMUL              4
+// It is 1 for 16bit, and 2 for two channels.
+#define BUFMUL              2
 #define MIXBUFFERSIZE       (SAMPLECOUNT*BUFMUL)
 
 #define SAMPLERATE          11025   // Hz
@@ -313,12 +313,6 @@ void I_SetChannels()
 
     int*  steptablemid = steptable + 128;
 
-    // Okay, reset internal mixing channels to zero.
-    /*for (i=0; i<NUM_CHANNELS; i++)
-    {
-      channels[i] = 0;
-    }*/
-
     // This table provides step widths for pitch parameters.
     // I fail to see that this is currently used.
     for (i=-128 ; i<128 ; i++)
@@ -508,7 +502,7 @@ void
 I_SubmitSound(void)
 {
     // Write it to DSP device.
-//    BSP_AUDIO_OUT_Play(mixbuffer, SAMPLECOUNT*BUFMUL);
+    BSP_AUDIO_OUT_Play(mixbuffer, SAMPLECOUNT*BUFMUL);
 }
 
 void

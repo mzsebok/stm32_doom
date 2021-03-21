@@ -21,7 +21,9 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "crc.h"
+#include "dma.h"
 #include "fatfs.h"
+#include "sai.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_device.h"
@@ -116,7 +118,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_CRC_Init();
+  MX_SAI2_Init();
   MX_TIM2_Init();
   MX_USART1_UART_Init();
   MX_FATFS_Init();
